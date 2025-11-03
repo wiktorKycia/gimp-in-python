@@ -8,7 +8,8 @@ class PPM:
 	def load(self, filename: str):
 		with open(filename, "r") as f:
 			line1 = f.readline()
-			if line1 != "P3":
+			print(line1)
+			if line1 != "P3\n":
 				raise Exception("something went wrong, I can feel it")
 			line2 = f.readline()
 			if line2[0] == "#":
@@ -17,7 +18,7 @@ class PPM:
 			self.size_y = int(line2.split(" ")[1])
 
 			line3 = f.readline()
-			if line3 != "255":
+			if line3 != "255\n":
 				raise Exception("something is wrong I can feel it")
 
 			for i in range(self.size_x):
@@ -30,11 +31,16 @@ class PPM:
 
 	def write(self, filename: str):
 		with open(filename, "w") as f:
-			f.write("P3")
-			f.write("# Created with Python")
-			f.write(f"{self.size_x} {self.size_y}")
-			f.write("255")
+			f.write("P3\n")
+			f.write("# Created with Python\n")
+			f.write(f"{self.size_x} {self.size_y}\n")
+			f.write("255\n")
 			for i in range(self.size_x):
 				for j in range(self.size_y):
 					for color in range(3):
-						f.write(self.pixels[i][j][color])
+						f.write(str(self.pixels[i][j][color])+"\n")
+
+if __name__ == "__main__":
+	ppm = PPM(640, 427)
+	ppm.load("input.ppm")
+	ppm.write("output.ppm")
